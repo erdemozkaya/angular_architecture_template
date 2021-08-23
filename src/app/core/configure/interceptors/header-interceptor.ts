@@ -13,6 +13,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { ActivationEnd, Router } from "@angular/router";
 import { GlobalFunctionsService } from "../../services/global-functions/global-functions.service";
 import { BaseService } from "../../common/base-service";
+import { BaseServiceSubjectService } from "../common/base-service-subject";
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
@@ -136,6 +137,6 @@ export class HeaderInterceptor implements HttpInterceptor {
 
     //loading is show
     isLoading(url: string) {
-        return this.baseService.loadingSubject.value;
+        return BaseServiceSubjectService.getSubjectValue();
     }
 }
