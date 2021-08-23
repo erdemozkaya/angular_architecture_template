@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppInjectorService } from './app-injector.service';
-import { BaseService2SubjectService } from "./base-service2-subject";
+import { BaseServiceSubjectService } from "./base-service2-subject";
 
 @Injectable({
     providedIn: "root",
@@ -19,7 +19,7 @@ export class BaseService {
     }
   
     private setSubject(showLoadingTemp:boolean){
-        BaseService2SubjectService.setSubject(showLoadingTemp);
+        BaseServiceSubjectService.setSubject(showLoadingTemp);
     }
 
     post<T,R>(filterHelper: T, addtionalUrl, showLoadingTemp = true): Observable<R> {
