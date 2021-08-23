@@ -136,6 +136,6 @@ export class HeaderInterceptor implements HttpInterceptor {
 
     //loading is show
     isLoading(url: string) {
-        return this.baseService.loadingSubject.getValue;
+        return this.baseService.loadingSubject.value;
     }
 }
