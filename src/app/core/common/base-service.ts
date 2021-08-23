@@ -7,8 +7,6 @@ import { AppInjectorService } from './app-injector.service';
     providedIn: "root",
 })
 export class BaseService {
-    injector;
-    protected serviceUrl: string;
     public loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
         true
     );
@@ -16,11 +14,7 @@ export class BaseService {
 
     constructor() {
         try {
-            this.injector = Injector.create([
-                { provide: HttpClient, useClass: HttpClient, deps: [] }
-            ]);
-    
-            this.httpClient = this.injector.get(HttpClient);
+            this.httpClient = AppInjectorService.getInjector().get<HttpClient>(HttpClient);
         } catch (error) {
             debugger
         }
@@ -28,18 +22,18 @@ export class BaseService {
 
     post<T,R>(filterHelper: T, addtionalUrl, showLoadingTemp = true): Observable<R> {
         this.loadingSubject.next(showLoadingTemp);
-        return this.httpClient.post(`${this.serviceUrl}/${addtionalUrl}`,filterHelper) as Observable<R>;
+        return this.httpClient.post(`${addtionalUrl}`,filterHelper) as Observable<R>;
     }
 
     create<T,R>(model:T | FormData,addtionalUrl, showLoadingTemp = true): Observable<R>{
-        return this.httpClient.post(`${this.serviceUrl}/${addtionalUrl}`, model) as Observable<R>;
+        return this.httpClient.post(`${addtionalUrl}`, model) as Observable<R>;
     }
 
     update<T,R>(model: T | FormData,addtionalUrl="update", showLoadingTemp = true): Observable<R> {
-        return this.httpClient.put(`${this.serviceUrl}/${addtionalUrl}`, model) as Observable<R>;
+        return this.httpClient.put(`${addtionalUrl}`, model) as Observable<R>;
     }
 
     delete<R>(id: number,addtionalUrl="deletebyid", showLoadingTemp = true): Observable<R> {
-        return this.httpClient.delete(this.serviceUrl + `/${addtionalUrl}?entityId=` + id) as Observable<R>;
+        return this.httpClient.delete(`/${addtionalUrl}?entityId=` + id) as Observable<R>;
     }
 }
