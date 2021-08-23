@@ -1,15 +1,15 @@
 import { BehaviorSubject } from "rxjs";
 
-export class BaseService2SubjectService {
+export class BaseServiceSubjectService {
     private static loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
         true
     );
   
     static setSubject(subjectValue: boolean) {
-        BaseService2SubjectService.loadingSubject.next(subjectValue)
+        BaseServiceSubjectService.loadingSubject.next(subjectValue)
     }
   
     static getSubjectValue(): boolean {
-      return BaseService2SubjectService.loadingSubject.value;
+      return BaseServiceSubjectService.loadingSubject.value;
     }
   }
