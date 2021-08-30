@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppInjectorService } from './app-injector.service';
-import { BaseServiceSubjectService } from "./base-service2-subject";
+import { BaseServiceSubjectService } from "./base-service-subject";
 
 @Injectable({
     providedIn: "root",
@@ -14,7 +14,6 @@ export class BaseService {
         try {
             this.httpClient = AppInjectorService.getInjector().get<HttpClient>(HttpClient);
         } catch (error) {
-            debugger
         }
     }
   
