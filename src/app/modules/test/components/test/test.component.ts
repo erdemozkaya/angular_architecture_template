@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/base/base.component';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,9 +6,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
-export class TestComponent implements OnInit {
+export class TestComponent extends BaseComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   ngOnInit(): void {
   }
