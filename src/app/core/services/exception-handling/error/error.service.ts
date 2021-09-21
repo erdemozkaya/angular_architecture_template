@@ -28,6 +28,9 @@ export class ErrorService {
     }
     else{
       if(navigator.onLine){
+        if(error.error instanceof ProgressEvent && error.error.total === 0 && error.error.loaded === 0){
+          return "Unable to reach API"
+        }
         return error.message;
       }else{
         return "No Internet Connection";
