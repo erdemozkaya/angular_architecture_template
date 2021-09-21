@@ -1,3 +1,5 @@
+import { BaseComponent } from './../shared/base/base.component';
+import { DashboardComponent } from 'src/app/components/dashboard/dashboard.component';
 import { ErrorHandler, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -7,7 +9,7 @@ import { AppComponent } from '../../components/app/app.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule } from '@ngx-translate/core';
-import { HttpBackend, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpBackend, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -18,13 +20,17 @@ import { UnAuthorizedResponseInterceptor } from 'src/app/core/configure/intercep
 import { CoreModule } from 'src/app/core/core.module';
 import { ExceptionHandlingService } from 'src/app/core/services/exception-handling/exception-handling.service';
 import { environment } from 'src/environments/environment';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BaseComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
+    HttpClientModule,
     AppRoutingModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
@@ -41,7 +47,8 @@ import { environment } from 'src/environments/environment';
         deps: [HttpBackend],
       },
     }),
-    CoreModule
+    CoreModule,
+    SharedModule
   ],
   providers: [
     DecimalPipe,
