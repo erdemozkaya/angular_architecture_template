@@ -12,7 +12,7 @@ import { catchError, delay, finalize, retry, takeUntil } from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
 import { ActivationEnd, Router } from "@angular/router";
 import { GlobalFunctionsService } from "../../services/global-functions/global-functions.service";
-import { BaseService } from "../../common/base-service";
+import { ExceptionHandlingService } from "../../services/exception-handling/exception-handling.service";
 import { BaseServiceSubjectService } from "../../common/base-service-subject";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class HeaderInterceptor implements HttpInterceptor {
         private globalSettings: GlobalFunctionsService,
         private mySpinner: MySpinnerService,
         private translate: TranslateService,
-        private baseService:BaseService
+        private exceptionHandlingService:ExceptionHandlingService
     ) {
         router.events.subscribe((event) => {
             // An event triggered at the end of the activation part of the Resolve phase of routing.
@@ -38,12 +38,12 @@ export class HeaderInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         //istek gonderme durumlarinda loading islemin gozukmesi icin
-        if (req.url && this.isLoading(req.url)) {
+        if (this.isLoading()) {
             this.setLoading(req);
         }
 
         let requestObject = req.clone({
-            url: `${this.globalSettings.getAPIUrl() + req.url.replace("[-]", "")}`, //bu replace isleminin amaci loading gozukmemesi icin url e bu isareti ekliyorum, onu silmek
+            url: `${this.globalSettings.getAPIUrl() + req.url}`,
             headers: req.headers
                 //.set('vendor', 'Bilsoft')
                 .set("Access-Control-Allow-Origin", "*")
@@ -65,17 +65,13 @@ export class HeaderInterceptor implements HttpInterceptor {
             // delay(1000),
             // retry(1),
             //takeUntil(this.httpCancelService.onCancelPendingRequests()),
-            // catchError((error: HttpErrorResponse) => {
-            //   debugger
-            //   if (error.status === 401) {
-            //     // refresh token
-            //   } else {
-            //     return throwError(error);
-            //   }
-            // }),
+            catchError(err => {
+                this.exceptionHandlingService.handleError(err);
+                return throwError(err);
+            }),
             finalize(() => {
                 //loading islemi atandiysa onu kapatmak icin
-                if (req.url && this.isLoading(req.url)) {
+                if (this.isLoading()) {
                     this.totalRequests--;
                     if (this.totalRequests === 0) {
                         this.mySpinner.hide();
@@ -136,7 +132,7 @@ export class HeaderInterceptor implements HttpInterceptor {
     }
 
     //loading is show
-    isLoading(url: string) {
+    isLoading() {
         return BaseServiceSubjectService.getSubjectValue();
     }
 }
