@@ -3,6 +3,8 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/modules/app/app.module';
 import { environment } from './environments/environment';
+import "src/app/core/extensions/string/string.extension";
+import "src/app/core/extensions/number/number.extension";
 
 if (environment.production) {
   enableProdMode();
